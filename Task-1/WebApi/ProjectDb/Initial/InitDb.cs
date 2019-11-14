@@ -13,7 +13,7 @@ namespace ProjectDb.Initial
         {
             if (!db.Users.Any())
             {
-                db.Users.AddRange(
+                db.UsersInfo.AddRange(
                     new User
                     {
                         Name = "Kolia",

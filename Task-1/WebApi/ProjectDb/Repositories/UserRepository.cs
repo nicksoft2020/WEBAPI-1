@@ -28,9 +28,20 @@ namespace ProjectDb.Repositories
             }
         }
 
-        public Task<bool> Create(User item)
+        /// <summary>
+        /// Creating data.
+        /// </summary>
+        /// <param name="item">new item</param>
+        /// <returns>true if item was createdd aele returns false</returns>
+        public async Task<bool> Create(User item)
         {
-            throw new NotImplementedException();
+            if(item != null)
+            {
+                await db.UsersInfo.AddAsync(item);
+                await db.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -39,7 +50,7 @@ namespace ProjectDb.Repositories
         /// <returns>Users</returns>
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await db.Users.ToListAsync();
+            return await db.UsersInfo.ToListAsync();
         }
 
         /// <summary>
