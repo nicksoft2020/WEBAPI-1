@@ -6,6 +6,7 @@ using Domain.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,8 @@ namespace WebApi
             {
                 option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>();
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
             services.AddControllers();
             services.AddMvc();
@@ -46,7 +49,7 @@ namespace WebApi
             using(var scope = app.ApplicationServices.CreateScope())
             {
                 ApplicationContext db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-                InitDb.Initial(db);
+                //InitDb.Initial(db);
             }
 
             if (env.IsDevelopment())
@@ -63,6 +66,8 @@ namespace WebApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

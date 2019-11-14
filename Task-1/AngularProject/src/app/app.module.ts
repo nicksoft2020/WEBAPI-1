@@ -1,36 +1,4 @@
-//import { BrowserModule } from '@angular/platform-browser';
-//import { NgModule } from '@angular/core';
-//import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-//import { AppComponent } from './app.component';
-//import { UserAccountComponent } from './user-account/user-account.component';
-
-//@NgModule({
-//  declarations: [
-//    AppComponent,
-//    UserAccountComponent
-//  ],
-//  imports: [
-//      BrowserModule,
-//      FormsModule,
-//      ReactiveFormsModule
-//  ],
-//  providers: [],
-//  bootstrap: [AppComponent]
-//})
-//export class AppModule { }
-
-//import { NgModule } from '@angular/core';
-//import { BrowserModule } from '@angular/platform-browser';
-//import { FormsModule } from '@angular/forms';
-//import { HttpClientModule } from '@angular/common/http';
-//import { AppComponent } from './app.component';
-
-//@NgModule({
-//    imports: [BrowserModule, FormsModule, HttpClientModule],
-//    declarations: [AppComponent],
-//    bootstrap: [AppComponent]
-//})
-//export class AppModule { }
+import { Routes, RouterModule } from '@angular/router'; 
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -40,30 +8,40 @@ import { AppComponent } from './app.component';
 import { UserComponent } from './user-account/user-account.component';
 import { HttpClientModule } from '@angular/common/http';
 
-//import { MatDialogModule } from '@angular/material';
-//import { DialogBodyComponent } from "./dialog-body/dialog-body.component";
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-//import { UserComponent } from './user-account/user.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
-
+export const routes: Routes = [
+    { path: '', redirectTo: 'login', pathMatch: 'full', },
+    { path: 'login', component: LoginComponent, data: { title: 'Login Page' } },
+    { path: 'Dasboard', component: DashboardComponent, data: { title: 'Dashboard Page' } },
+    { path: 'AddUser', component: RegisterComponent, data: { title: 'Add User Page' } },
+]; 
 
 @NgModule({
     declarations: [
         AppComponent,
         AppComponent,
         UserComponent,
-        //DialogBodyComponent
+        LoginComponent,
+        RegisterComponent,
+        DashboardComponent,
+        
     ],
     imports: [
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        //MatDialogModule,
+        RouterModule.forRoot(routes),
         BrowserAnimationsModule
     ],
+    exports: [RouterModule],
     providers: [],
-    bootstrap: [AppComponent],
-    //entryComponents: [DialogBodyComponent]
+    bootstrap: [AppComponent, RegisterComponent, LoginComponent],
+    //entryComponents: [RegisterComponent]
 })
 export class AppModule { }

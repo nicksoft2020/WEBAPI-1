@@ -11,9 +11,9 @@ namespace WebApi.Controllers
     /// <summary>
     /// This is a class which manages application
     /// </summary>
-    //[Route("api/users")]
     [Route("api/users")]
-
+    //[System.Web.Http.Route("api/[controller]")]
+    //[ApiController]
     public class HomeController : Controller
     {
         private IUnitOfWork repository;    // Repository value.

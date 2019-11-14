@@ -1,3 +1,19 @@
-<user-account></user-account>
 
+  <header>
+    <button class="total-btn btn btn-info" (click)="showUsers()">Total users</button>
+    <button class="menu-btn btn btn-primary" (click)="login()">Login</button>
+    <button class="menu-btn btn btn-success" (click)="register()">Register</button>
+  </header>
+
+<div *ngIf="btnRegister" class="container">
+  <app-register></app-register>
+</div>
+
+<div *ngIf="btnLogin" class="container">
+  <app-login></app-login>
+</div>
+
+<div *ngIf="btnShowUsers">
+  <user-account></user-account>
+</div>
 
