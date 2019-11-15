@@ -15,6 +15,7 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
+    { path: '', component: UserComponent },
     { path: 'user', component: UserComponent },
     { path: 'login', component: LoginComponent, data: { title: 'Login Page' } },
     { path: 'Dashboard', component: DashboardComponent, data: { title: 'Dashboard Page' } },

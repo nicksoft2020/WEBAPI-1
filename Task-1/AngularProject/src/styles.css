@@ -5,6 +5,10 @@ html, body {
 
 }
 
+.h-pos {
+  text-align: center;
+}
+
 .pos-btn {
   float: left;
   margin-left: 20px;

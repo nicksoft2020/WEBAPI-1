@@ -1,22 +1,31 @@
 
-  <div class="register-block mt-5 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
-    <div>
-      <form [formGroup]="UserForm" (ngSubmit)="onFormSubmit(UserForm.value)">
-        <h1 style="text-align:center">Register</h1>
-        <div class="form-group mb-3">
-          <input type="text" class="form-control" placeholder="Lastname" formControlName="Lastname">
-        </div>
-        <div class="form-group mb-3">
-          <input type="text" class="form-control" placeholder="Name" formControlName="Name">
-        </div>
-        <div class="form-group mb-4">
-          <input type="text" class="form-control" placeholder="Email" formControlName="Email">
-        </div>
-        <div class="form-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" formControlName="Password">
-        </div>
-        <button type="submit" class="btn btn-block btn-success">Add User</button>
-      </form>
-    </div>
-  </div>
-
+ <div class="register-block mt-5 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+   <form [formGroup]="UserForm" (ngSubmit)="onFormSubmit(UserForm.value)">
+     <h1 style="text-align:center">Register</h1>
+     <div class="form-group mb-3">
+       <input type="text" class="form-control" placeholder="Lastname" formControlName="Lastname">
+       <p class="text-danger"
+            *ngIf="UserForm.controls['Lastname'].invalid && UserForm.controls['Lastname'].touched">
+         Lastname need to start from uppercase letter and consists of only letters. 
+       </p>
+     </div>
+     <div class="form-group mb-3">
+       <input type="text" class="form-control" placeholder="Name" formControlName="Name">
+       <p class="text-danger"
+          *ngIf="UserForm.controls['Name'].invalid && UserForm.controls['Name'].touched">
+         Name need to start from uppercase letter and consists of only letters.
+       </p>
+     </div>
+     <div class="form-group mb-4">
+       <input type="text" class="form-control" placeholder="Email" formControlName="Email">
+       <p class="text-danger"
+            *ngIf="UserForm.controls['Email'].invalid && UserForm.controls['Email'].touched">
+         Email is wrong.
+       </p>
+     </div>
+     <div class="form-group mb-3">
+       <input type="password" class="form-control" placeholder="Password" formControlName="Password">
+     </div>
+       <button [disabled]="UserForm.invalid" type="submit" class="btn btn-block btn-success">Add User</button>
+   </form>
+</div>

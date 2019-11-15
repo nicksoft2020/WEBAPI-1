@@ -56,7 +56,6 @@ namespace WebApi.Controllers
                     if (result.Succeeded)
                     {
                         await repository.Users.Create(userData); 
-                        //await signInManager.SignInAsync(user, false);
                         return new Response
                         { Status = "Success", Message = "SuccessFully Saved." };
                     }
@@ -98,6 +97,18 @@ namespace WebApi.Controllers
 
             }
             return new Response { Status = "Invalid", Message = "Invalid email of password!" };
+        }
+
+        /// <summary>
+        /// Logoff user
+        /// </summary>
+        /// <returns>Responce object.</returns>
+        [HttpGet]
+        [Route("LogoutUser")]
+        public async Task<Response> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return new Response { Status = "Success" };
         }
     }
 }

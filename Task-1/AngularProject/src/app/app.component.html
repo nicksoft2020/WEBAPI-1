@@ -1,8 +1,14 @@
 
   <header>
     <a routerLink="/user" class="total-btn btn btn-info">Total users</a>
-    <a routerLink="/register" class="menu-btn btn btn-success">Register</a>
-    <a routerLink="/login" class="menu-btn btn btn-primary">Login</a>
+    <nav *ngIf="isLogined">
+      <button (click)="logOff()" class="menu-btn btn btn-danger">Logout</button>
+    </nav>
+    <nav *ngIf="!isLogined">
+
+      <a routerLink="/register" class="menu-btn btn btn-success">Register</a>
+      <a routerLink="/login" class="menu-btn btn btn-primary">Login</a>
+    </nav>
   </header>
 
 <router-outlet>

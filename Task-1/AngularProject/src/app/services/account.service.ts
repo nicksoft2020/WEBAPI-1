@@ -37,9 +37,15 @@ export class AccountService {
         const headerSettings: { [name: string]: string | string[]; } = {};
         this.header = new HttpHeaders(headerSettings);
     }
+
     Login(model: any) {
         return this.http.post<any>(this.Url + "/LoginUser", model, { headers: this.header });
     }
+
+    LogOff() {
+        return this.http.get(this.Url + "/LogoutUser");
+    }
+
     CreateUser(register: Register) {
         return this.http.post(this.Url + "/RegisterUser", register);
     }

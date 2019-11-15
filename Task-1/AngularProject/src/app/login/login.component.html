@@ -1,30 +1,60 @@
+<!--<div class="register-block mt-5 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+  <form name="form" (ngSubmit)="login()" #f="ngForm">
+    <h1 style="text-align:center">Login</h1>
+    <div class="form-group ">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="icon-user"></i></span>
+      </div>
+      <input type="text" name="Email" [(ngModel)]="model.Email" class="form-control" placeholder="Email" required />
+    </div>
+    <div class="form-group ">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="icon-lock"></i></span>
+      </div>
+      <input type="password" name="Passward" [(ngModel)]="model.Password" class="form-control"
+             placeholder="Password" required />
+    </div>
+    <div>
+      <p style="color:#E92626;font-size:20px;font-weight:normal" Class="success" align="left">
+        {{errorMessage}}
+      </p>
+    </div>
+    <button type="submit" class="btn btn-primary left ">Login</button>
+   <div class="col-6 text-right">
+        <button type="button" class="btn btn-link px-0">Forgot password?</button>
+   </div>
 
-  <div class="register-block mt-5 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
-    <form name="form" (ngSubmit)="login()" #f="ngForm">
-      <h1 style="text-align:center">Login</h1>
-      <div class="form-group ">
-        <div class="input-group-prepend">
-          <span class="input-group-text"><i class="icon-user"></i></span>
-        </div>
-        <input type="text" name="Email" [(ngModel)]="model.Email" class="form-control" placeholder="Email" required />
-      </div>
-      <div class="form-group ">
-        <div class="input-group-prepend">
-          <span class="input-group-text"><i class="icon-lock"></i></span>
-        </div>
-        <input type="password" name="Passward" [(ngModel)]="model.Password" class="form-control"
-               placeholder="Password" required />
-      </div>
-      <div>
-        <p style="color:#E92626;font-size:20px;font-weight:normal" Class="success" align="left">
-          {{errorMessage}}
-        </p>
-      </div>
-      <button type="submit" class="btn btn-primary left ">Login</button>
-     <div class="col-6 text-right">
-          <button type="button" class="btn btn-link px-0">Forgot password?</button>
+  </form>
+</div>-->
+<div class="register-block mt-5 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+   <form [formGroup]="LoginForm"  name="form" (ngSubmit)="login(LoginForm.value)" >
+     <h1 style="text-align:center">Login</h1>
+     <div class="form-group ">
+       <div class="input-group-prepend">
+         <span class="input-group-text"><i class="icon-user"></i></span>
+       </div>
+       <input type="text" class="form-control" placeholder="Email" formControlName="Email" />
+       <p class="text-danger"
+          *ngIf="LoginForm.controls['Email'].invalid && LoginForm.controls['Email'].touched">
+         Email is wrong.
+       </p>
      </div>
-      
-    </form>
-  </div>
-  
+     <div class="form-group ">
+       <div class="input-group-prepend">
+         <span class="input-group-text"><i class="icon-lock"></i></span>
+       </div>
+       <input type="password" class="form-control" formControlName="Password"
+              placeholder="Password"  />
+     </div>
+     <div>
+       <p style="color:#E92626;font-size:20px;font-weight:normal" Class="success" align="left">
+         {{errorMessage}}
+       </p>
+     </div>
+     <button [disabled]="LoginForm.invalid" type="submit" class="btn btn-primary left ">Login</button>
+    <div class="col-6 text-right">
+         <button  type="button" class="btn btn-link px-0">Forgot password?</button>
+    </div>
+
+   </form>
+ </div>
