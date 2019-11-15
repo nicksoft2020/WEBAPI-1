@@ -50,4 +50,8 @@ export class AccountService {
         return this.http.post(this.Url + "/RegisterUser", register);
     }
 
+    getUserProfile() {
+        var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer' + localStorage.getItem('token') });
+        return this.http.get("https://localhost:44334/api/profile/GetProfile", { headers: tokenHeader });
+    }
 }

@@ -35,7 +35,10 @@ export class LoginComponent implements OnInit {
             data => {
                 if (data.status == "Success") {
                     debugger;
+                    localStorage.setItem('token', data.message);
+                    debugger;
                     this.router.navigateByUrl('/Dashboard');
+                    debugger;
                     this.AppComp.LoginedUser(data.fullname);
                 }
                 else {

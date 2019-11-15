@@ -15,6 +15,7 @@ export class AppComponent {
 
     
     LoginedUser(name: string) {
+        debugger;
         this.fullName = name;
         this.isLogined = true;
     }

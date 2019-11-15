@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
     { path: '', component: UserComponent },
@@ -30,7 +31,6 @@ export const routes: Routes = [
         LoginComponent,
         RegisterComponent,
         DashboardComponent,
-       
     ],
     imports: [
         BrowserModule,
