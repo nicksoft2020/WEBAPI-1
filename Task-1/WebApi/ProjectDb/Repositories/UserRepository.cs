@@ -3,6 +3,7 @@ using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using ProjectDb.EF;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,16 @@ namespace ProjectDb.Repositories
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Finding the list of items with predicate.
+        /// </summary>
+        /// <param name="predicate">boolean condition.</param>
+        /// <returns>the list of items with predicate.</returns>
+        public IEnumerable<User> Find(Func<User, bool> predicate)
+        {
+            return db.UsersInfo.Where(predicate).ToList();
         }
 
         /// <summary>

@@ -31,5 +31,12 @@ namespace Domain.Interfaces
         /// <param name="item">new item</param>
         /// <returns>true if item was createdd aele returns false</returns>
         Task<bool> Create(T item);
+
+        /// <summary>
+        /// Finding the list of items with predicate.
+        /// </summary>
+        /// <param name="predicate">boolean condition.</param>
+        /// <returns>the list of items with predicate.</returns>
+        IEnumerable<T> Find(Func<T, Boolean> predicate);
     }
 }

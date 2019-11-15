@@ -15,10 +15,10 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full', },
+    { path: 'user', component: UserComponent },
     { path: 'login', component: LoginComponent, data: { title: 'Login Page' } },
-    { path: 'Dasboard', component: DashboardComponent, data: { title: 'Dashboard Page' } },
-    { path: 'AddUser', component: RegisterComponent, data: { title: 'Add User Page' } },
+    { path: 'Dashboard', component: DashboardComponent, data: { title: 'Dashboard Page' } },
+    { path: 'register', component: RegisterComponent, data: { title: 'Add User Page' } },
 ]; 
 
 @NgModule({
@@ -29,7 +29,7 @@ export const routes: Routes = [
         LoginComponent,
         RegisterComponent,
         DashboardComponent,
-        
+       
     ],
     imports: [
         BrowserModule,

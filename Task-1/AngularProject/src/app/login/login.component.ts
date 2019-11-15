@@ -38,8 +38,8 @@ export class LoginComponent {
         this.LoginService.Login(this.model).subscribe(
             data => {
                 debugger;
-                if (data.Status == "Success") {
-                    this.router.navigate(['/Dashboard']);
+                if (data.status == "Success") {
+                    this.router.navigateByUrl('/Dashboard');
                     debugger;
                 }
                 else {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Entities;
+using Domain.Interfaces;
 //using System.Web.Http;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
@@ -13,15 +15,24 @@ namespace WebApi.Controllers
     /// This class manages users
     /// </summary>
     [Route("api/account")]
-    //[Route("api/[controller]")]
     [ApiController]
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private IUnitOfWork repository;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(IUnitOfWork unit, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
+            if(unit != null)
+            {
+                repository = unit;
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
+            
             this.signInManager = signInManager;
             this.userManager = userManager;
         }
@@ -33,7 +44,6 @@ namespace WebApi.Controllers
         /// <returns>Response object</returns>
         [HttpPost]
         [Route("RegisterUser")]
-        //[Route("api/account/RegisterUser")]
         public async Task<object> RegisterUser([FromBody]RegisterModel model)
         {
             try
@@ -41,13 +51,16 @@ namespace WebApi.Controllers
                 if (ModelState.IsValid)
                 {
                     IdentityUser user = new IdentityUser { Email = model.Email, UserName = model.Email };
+                    User userData = new User { LastName = model.LastName, Email = model.Email, Name = model.Name, Active = false };
                     var result = await userManager.CreateAsync(user, model.Password);   // adding new user to database
                     if (result.Succeeded)
                     {
-                        await signInManager.SignInAsync(user, false);
+                        await repository.Users.Create(userData); 
+                        //await signInManager.SignInAsync(user, false);
                         return new Response
                         { Status = "Success", Message = "SuccessFully Saved." };
                     }
+                    
                 }
             }
             catch (Exception)
@@ -55,7 +68,10 @@ namespace WebApi.Controllers
                 throw;
             }
             return new Response
-            { Status = "Error", Message = "Invalid Data." };
+            { 
+                Status = "Error", 
+                Message = "Invalid Data." 
+            };
         }
 
         /// <summary>
@@ -72,7 +88,8 @@ namespace WebApi.Controllers
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
                 if (result.Succeeded)
                 {
-                    return new Response { Status = "Success", Message = model.Email };
+                    User user = repository.Users.Find(user => user.Email == model.Email).FirstOrDefault();
+                    return new Response { Status = "Success", Message = model.Email, FullName = user.LastName + " " + user.Name };
                 }
                 else
                 {

@@ -11,5 +11,6 @@ namespace Domain.Models
     {
         public string Status { set; get; }
         public string Message { set; get; }
+        public string FullName { get; set; }
     }
 }

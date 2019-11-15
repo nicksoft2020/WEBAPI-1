@@ -1,19 +1,9 @@
 
   <header>
-    <button class="total-btn btn btn-info" (click)="showUsers()">Total users</button>
-    <button class="menu-btn btn btn-primary" (click)="login()">Login</button>
-    <button class="menu-btn btn btn-success" (click)="register()">Register</button>
+    <a routerLink="/user" class="total-btn btn btn-info">Total users</a>
+    <a routerLink="/register" class="menu-btn btn btn-success">Register</a>
+    <a routerLink="/login" class="menu-btn btn btn-primary">Login</a>
   </header>
 
-<div *ngIf="btnRegister" class="container">
-  <app-register></app-register>
-</div>
-
-<div *ngIf="btnLogin" class="container">
-  <app-login></app-login>
-</div>
-
-<div *ngIf="btnShowUsers">
-  <user-account></user-account>
-</div>
-
+<router-outlet>
+</router-outlet>
