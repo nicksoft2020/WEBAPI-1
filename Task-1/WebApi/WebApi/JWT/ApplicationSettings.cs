@@ -1,15 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebApi.JWT
+﻿namespace WebApi.JWT
 {
+    /// <summary>
+    /// This class has properties which 
+    /// gives access to configure file.
+    /// </summary>
     public class ApplicationSettings
     {
-        public string JWT_Secret { get; set; }
-        public string Client_Url { get; set; }
+        public string JWT_Secret { get; set; } // The secret for token.
+        public string Client_Url { get; set; } 
     }
 }

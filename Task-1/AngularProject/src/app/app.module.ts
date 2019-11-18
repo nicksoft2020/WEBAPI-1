@@ -16,10 +16,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
-    { path: '', component: UserComponent },
+    { path: '', component: LoginComponent, data: { title: 'Login Page' }  },
     { path: 'user', component: UserComponent },
     { path: 'login', component: LoginComponent, data: { title: 'Login Page' } },
-    { path: 'Dashboard', component: DashboardComponent, canActivate:[AuthGuard], data: { title: 'Dashboard Page' } },
+    { path: 'Dashboard', component: DashboardComponent, data: { title: 'Dashboard Page' } },
     { path: 'register', component: RegisterComponent, data: { title: 'Add User Page' } },
 ]; 
 

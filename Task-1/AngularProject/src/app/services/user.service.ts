@@ -21,13 +21,10 @@ export class UserService {
 
     // Updating users.
     updateUser(user: User) {
-        return this.http.put(this.url + '/' + user.id, user);
+        return this.http.put(this.url, user);
     }
 
     CreateUser(register: Register) {
-        //debugger;
-        //const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-        //return this.http.post<Register[]>(this.Url + "RegisterUser", register, httpOptions);
         return this.http.post("https://localhost:44334/api/account", register);
     }
 }

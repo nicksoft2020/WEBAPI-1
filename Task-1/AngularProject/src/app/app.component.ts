@@ -26,7 +26,7 @@ export class AppComponent {
         localStorage.removeItem('token');
         this.LoginService.LogOff().subscribe(
             () => {
-                this.router.navigateByUrl('/user');
+                this.router.navigateByUrl('/login');
                 this.LogoutUser();
             });
     }

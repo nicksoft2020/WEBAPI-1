@@ -3,8 +3,6 @@ using Domain.Interfaces;
 using ProjectDb.EF;
 using ProjectDb.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ProjectDb.Storage
 {

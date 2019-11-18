@@ -14,7 +14,6 @@ export class DashboardComponent implements OnInit {
         var el = localStorage.getItem('token');
         this.service.getUserProfile().subscribe(
             res => {
-                debugger;
                 this.userDetails = res;
             },
             err => {

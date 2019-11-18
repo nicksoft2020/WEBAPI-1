@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
-//using System.Web.Http;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,17 +26,10 @@ namespace WebApi.Controllers
         private IUnitOfWork repository;
         private readonly ApplicationSettings options;
 
-        public AccountController(IUnitOfWork unit, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+        public AccountController(IUnitOfWork _repository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
             IOptions<ApplicationSettings> appSettings)
         {
-            if(unit != null)
-            {
-                repository = unit;
-            }
-            else
-            {
-                throw new NullReferenceException();
-            }
+            repository = _repository;
             options = appSettings.Value;
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -56,26 +46,19 @@ namespace WebApi.Controllers
         {
             try
             {
-                
                 IdentityUser user = new IdentityUser { Email = model.Email, UserName = model.Email };
                 User userData = new User { LastName = model.LastName, Email = model.Email, Name = model.Name, Active = false };
-                var result = await userManager.CreateAsync(user, model.Password);   // adding new user to database
+                IdentityResult result = await userManager.CreateAsync(user, model.Password);   // adding new user to database
                 if (result.Succeeded)
                 {
-                    await repository.Users.Create(userData); 
-                    return new Response
-                    { Status = "Success", Message = "SuccessFully Saved." };
+                    await repository.Users.Create(userData);
+                    return Ok("SuccessFully Saved.");
                 }
             }
             catch (Exception)
             {
-                throw;
             }
-            return new Response
-            { 
-                Status = "Error", 
-                Message = "Invalid Data." 
-            };
+            return BadRequest("Invalid Data.");
         }
 
         /// <summary>
@@ -85,32 +68,17 @@ namespace WebApi.Controllers
         /// <returns>the object of Responce class.</returns>
         [HttpPost]
         [Route("LoginUser")]
-        public async Task<Object> Login([System.Web.Http.FromBody]LoginModel model)
+        public async Task<Object> Login([FromBody]LoginModel model)
         {
-            
+
             var user = await userManager.FindByNameAsync(model.Email);
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
-                    
-                    var tokenDescriptor = new SecurityTokenDescriptor
-                    {
-                        Subject = new ClaimsIdentity(new Claim[]
-                        {
-                            new Claim("UserID", user.Id.ToString())
-                        }),
-                        Expires = DateTime.UtcNow.AddMinutes(5),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature) 
-                    };
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                    string token = tokenHandler.WriteToken(securityToken);
-                    ///
-                    User user1 = repository.Users.Find(user => user.Email == model.Email).FirstOrDefault();
-                    return Ok(new { token });
-                    //return new Response { Status = "Success", Message = token };
+
+                string token = GenerateToken.CreateToken(options, user);
+                return Ok(new { token });
             }
             return BadRequest(new { message = "There is not valid email of password!" });
-               // return new Response { Status = "Invalid", Message = "Invalid User." };
         }
 
         /// <summary>
