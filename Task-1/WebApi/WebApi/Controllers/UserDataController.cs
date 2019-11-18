@@ -2,26 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPi.Controllers
+namespace WebApi.Controllers
 {
     [Route("api/profile")]
     [ApiController]
-    public class UserProfileController : ControllerBase
+    public class UserDataController : ControllerBase
     {
         private UserManager<IdentityUser> _userManager;
-        public UserProfileController(UserManager<IdentityUser> userManager)
+        public UserDataController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Getting data from database with helping JWT token.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetProfile")]
-        //GET : /api/UserProfile
         public async Task<Object> GetUserProfile()
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
@@ -32,5 +34,6 @@ namespace WebAPi.Controllers
                 user.UserName
             };
         }
+
     }
 }

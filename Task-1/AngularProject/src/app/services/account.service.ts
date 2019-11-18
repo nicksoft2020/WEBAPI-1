@@ -51,7 +51,8 @@ export class AccountService {
     }
 
     getUserProfile() {
-        var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer' + localStorage.getItem('token') });
+        var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('token') });
+        debugger;
         return this.http.get("https://localhost:44334/api/profile/GetProfile", { headers: tokenHeader });
     }
 }

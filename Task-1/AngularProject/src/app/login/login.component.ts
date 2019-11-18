@@ -22,6 +22,9 @@ export class LoginComponent implements OnInit {
     constructor(private router: Router, private AppComp: AppComponent, private LoginService: AccountService) { }
 
     ngOnInit() {
+        //if (localStorage.getItem('token') != null)
+        //    this.router.navigateByUrl('/Dashboard');
+
         this.LoginForm = new FormGroup({
             "Email": new FormControl("", [Validators.required, Validators.email]),
             "Password": new FormControl("", [Validators.required])
@@ -32,22 +35,35 @@ export class LoginComponent implements OnInit {
 
     login(login: Login) {
         this.LoginService.Login(login).subscribe(
-            data => {
-                if (data.status == "Success") {
-                    debugger;
-                    localStorage.setItem('token', data.message);
-                    debugger;
-                    this.router.navigateByUrl('/Dashboard');
-                    debugger;
-                    this.AppComp.LoginedUser(data.fullname);
-                }
-                else {
-                    this.errorMessage = data.Message;
-                }
+            (res: any) => {
+                this.AppComp.LoginedUser();
+                localStorage.setItem('token', res.token);
+                this.router.navigateByUrl('/Dashboard');
+                
             },
-            error => {
-                this.errorMessage = error.message;
-            });
+            (err) => {
+                if (err.status == "404") {
+                    this.errorMessage = "There is invalid email or password!";
+                }
+            }
+
+        );
+            //data => {
+            //    if (data.status == "Success") {
+            //        debugger;
+            //        localStorage.setItem('token', data.message);
+            //        debugger;
+            //        this.router.navigateByUrl('/Dashboard');
+            //        debugger;
+            //        this.AppComp.LoginedUser(data.fullname);
+            //    }
+            //    else {
+            //        this.errorMessage = data.Message;
+            //    }
+            //},
+            //error => {
+            //    this.errorMessage = error.message;
+            //});
     };
 
     

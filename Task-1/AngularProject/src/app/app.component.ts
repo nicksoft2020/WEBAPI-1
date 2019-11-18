@@ -14,9 +14,7 @@ export class AppComponent {
     constructor(private router: Router, private LoginService: AccountService) { }
 
     
-    LoginedUser(name: string) {
-        debugger;
-        this.fullName = name;
+    LoginedUser() {
         this.isLogined = true;
     }
 
@@ -25,6 +23,7 @@ export class AppComponent {
     }
 
     logOff() {
+        localStorage.removeItem('token');
         this.LoginService.LogOff().subscribe(
             () => {
                 this.router.navigateByUrl('/user');

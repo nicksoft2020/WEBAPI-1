@@ -27,10 +27,10 @@ namespace WebApi.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         private IUnitOfWork repository;
-        private readonly AuthOntions options;
+        private readonly ApplicationSettings options;
 
         public AccountController(IUnitOfWork unit, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
-            IOptions<AuthOntions> appSettings)
+            IOptions<ApplicationSettings> appSettings)
         {
             if(unit != null)
             {
@@ -85,32 +85,32 @@ namespace WebApi.Controllers
         /// <returns>the object of Responce class.</returns>
         [HttpPost]
         [Route("LoginUser")]
-        public async Task<Response> Login([System.Web.Http.FromBody]LoginModel model)
+        public async Task<Object> Login([System.Web.Http.FromBody]LoginModel model)
         {
-            //var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-            //if (result.Succeeded)
+            
             var user = await userManager.FindByNameAsync(model.Email);
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
-                    //var user = await userManager.FindByNameAsync(model.Email);
-                    ///
+                    
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
                         Subject = new ClaimsIdentity(new Claim[]
                         {
-                            new Claim("UserID",user.Id.ToString())
+                            new Claim("UserID", user.Id.ToString())
                         }),
                         Expires = DateTime.UtcNow.AddMinutes(5),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature) 
                     };
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                     string token = tokenHandler.WriteToken(securityToken);
                     ///
                     User user1 = repository.Users.Find(user => user.Email == model.Email).FirstOrDefault();
-                    return new Response { Status = "Success", Message = token };
-                }
-                return new Response { Status = "Invalid", Message = "Invalid User." };
+                    return Ok(new { token });
+                    //return new Response { Status = "Success", Message = token };
+            }
+            return BadRequest(new { message = "There is not valid email of password!" });
+               // return new Response { Status = "Invalid", Message = "Invalid User." };
         }
 
         /// <summary>

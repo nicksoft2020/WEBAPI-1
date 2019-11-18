@@ -10,6 +10,8 @@ export class DashboardComponent implements OnInit {
     constructor(private service: AccountService) { }
 
     ngOnInit() {
+        debugger;
+        var el = localStorage.getItem('token');
         this.service.getUserProfile().subscribe(
             res => {
                 debugger;

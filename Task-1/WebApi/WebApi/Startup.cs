@@ -35,7 +35,7 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<AuthOntions>((Configuration.GetSection("ApplicationSettings")));
+            services.Configure<ApplicationSettings>((Configuration.GetSection("ApplicationSettings")));
 
             services.AddDbContext<ApplicationContext>(option =>
             {
@@ -43,13 +43,17 @@ namespace WebApi
             });
 
             services.AddIdentity<IdentityUser, IdentityRole>(opts => {
-                opts.Password.RequiredLength = 5;   // минимальная длина
-                opts.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
-                opts.Password.RequireLowercase = false; // требуются ли символы в нижнем регистре
-                opts.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
-                opts.Password.RequireDigit = false; // требуются ли цифры
+                opts.Password.RequiredLength = 5;   
+                opts.Password.RequireNonAlphanumeric = false;  
+                opts.Password.RequireLowercase = false; 
+                opts.Password.RequireUppercase = false; 
+                opts.Password.RequireDigit = false; 
             })
                 .AddEntityFrameworkStores<ApplicationContext>();
+
+
+
+            // Jwt authentification
 
             var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
 
@@ -109,8 +113,8 @@ namespace WebApi
                 endpoints.MapControllers();
             });
 
-            app.UseCors(option => option.WithOrigins("http://localhost:4200").AllowAnyMethod());
-            app.UseCors(option => option.WithOrigins("http://localhost:4200").AllowAnyHeader());
+            //app.UseCors(option => option.WithOrigins("http://localhost:4200").AllowAnyMethod()); today
+            //app.UseCors(option => option.WithOrigins("http://localhost:4200").AllowAnyHeader());
         }
     }
 }
