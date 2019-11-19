@@ -33,7 +33,8 @@ export class AccountService {
     token: string;
     header: any;
     constructor(private http: HttpClient) {
-        this.Url = "https://localhost:44334/api/account";
+        //this.Url = "https://localhost:44334/api/account";
+        this.Url = "http://localhost:8080/api/users";
         const headerSettings: { [name: string]: string | string[]; } = {};
         this.header = new HttpHeaders(headerSettings);
     }
@@ -53,6 +54,7 @@ export class AccountService {
     getUserProfile() {
         var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('token') });
         debugger;
-        return this.http.get("https://localhost:44334/api/profile/GetProfile", { headers: tokenHeader });
+        //return this.http.get("https://localhost:44334/api/profile/GetProfile", { headers: tokenHeader });
+        return this.http.get("http://localhost:8080/api/profile/GetProfile", { headers: tokenHeader });
     }
 }

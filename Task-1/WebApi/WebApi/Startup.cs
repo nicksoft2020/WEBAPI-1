@@ -4,6 +4,7 @@ using Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -77,7 +78,11 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            using(var scope = app.ApplicationServices.CreateScope())
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            using (var scope = app.ApplicationServices.CreateScope())
             {
                 ApplicationContext db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
                 //InitDb.Initial(db);
@@ -88,14 +93,15 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseDefaultFiles(); // <-- Это
-            //app.UseStaticFiles(); // <-- Вот это
-
-            //app.UseCors(option => option.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader()); //
+            
             app.UseCors(option => option.WithOrigins(Configuration["ApplicationSettings:Client_Url"].ToString()).AllowAnyMethod().AllowAnyHeader()); //
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseHsts();
+
+            app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
@@ -106,8 +112,7 @@ namespace WebApi
                 endpoints.MapControllers();
             });
 
-            //app.UseCors(option => option.WithOrigins("http://localhost:4200").AllowAnyMethod()); today
-            //app.UseCors(option => option.WithOrigins("http://localhost:4200").AllowAnyHeader());
+            
         }
     }
 }

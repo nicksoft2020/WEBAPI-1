@@ -7,8 +7,8 @@ import { Register } from '../entity/register';
 
 @Injectable()
 export class UserService {
-    private url = "https://localhost:44334/api/users";
-   
+    //private url = "https://localhost:44334/api/users";
+    private url = "http://localhost:8080/api/users";
     constructor(private http: HttpClient) {
     }
 
