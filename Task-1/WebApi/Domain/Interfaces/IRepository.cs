@@ -28,7 +28,7 @@ namespace Domain.Interfaces
         /// Creating data.
         /// </summary>
         /// <param name="item">new item</param>
-        /// <returns>true if item was createdd aele returns false</returns>
+        /// <returns>true if item was createdd else returns false</returns>
         Task<bool> Create(T item);
 
         /// <summary>

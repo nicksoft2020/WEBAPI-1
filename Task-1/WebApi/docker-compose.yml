@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        PUBLISH_PROFILE: ./Properties/PublishProfiles/CustomProfile.pubxml
+        PUBLISH_PROFILE: ./Properties/PublishProfiles/FolderProfile.pubxml
         SOLUTION: WebApi.sln
     entrypoint: dotnet WebApi.dll
     ports:
