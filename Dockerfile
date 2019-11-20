@@ -7,8 +7,6 @@ WORKDIR /app
 # Copy csproj and restore as distinct layers
 COPY $SOLUTION ./
 COPY WebApi ./WebApi
-COPY Domain ./Domain
-COPY ProjectDb ./ProjectDb
 RUN dotnet restore
 
 # Copy everything else and build
