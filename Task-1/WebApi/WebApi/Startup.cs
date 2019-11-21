@@ -71,7 +71,6 @@ namespace WebApi
 
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
             services.AddControllers();
-            services.AddMvc();
             services.AddCors();
         }
 
@@ -95,13 +94,12 @@ namespace WebApi
 
             
             app.UseCors(option => option.WithOrigins(Configuration["ApplicationSettings:Client_Url"].ToString()).AllowAnyMethod().AllowAnyHeader()); //
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseHsts();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
 

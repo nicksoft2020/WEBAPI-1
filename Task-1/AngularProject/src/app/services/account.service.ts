@@ -8,33 +8,12 @@ import { Register } from '../entity/register';
 
 
 export class AccountService {
-    //Url: string;
-    //token: string;
-    //header: any; 
-    //private url = "https://localhost:44334/api/account";
-
-    //constructor(private http: HttpClient)
-    //{
-    //    this.Url = 'https://localhost:44334/api/account';
-    //    const headerSettings: { [name: string]: string | string[]; } = {};
-    //    this.header = new HttpHeaders(headerSettings);  
-    //}
-
-    //createUser(user: Register) {
-    //    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };  
-    //    //return this.http.post(this.Url, user);
-    //    return this.http.post<Register[]>(this.Url + '/createcontact', user, httpOptions)
-    //}
-
-    //singInUser() {
-
-    //}
     Url: string;
     token: string;
     header: any;
     constructor(private http: HttpClient) {
         //this.Url = "https://localhost:44334/api/account";
-        this.Url = "http://localhost:8080/api/users";
+        this.Url = "http://192.168.99.100:8080/api/users";
         const headerSettings: { [name: string]: string | string[]; } = {};
         this.header = new HttpHeaders(headerSettings);
     }
@@ -54,7 +33,6 @@ export class AccountService {
     getUserProfile() {
         var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('token') });
         debugger;
-        //return this.http.get("https://localhost:44334/api/profile/GetProfile", { headers: tokenHeader });
-        return this.http.get("http://localhost:8080/api/profile/GetProfile", { headers: tokenHeader });
+        return this.http.get("http://192.168.99.100:8080/api/profile/GetProfile", { headers: tokenHeader });
     }
 }

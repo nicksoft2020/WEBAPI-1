@@ -14,18 +14,18 @@ services:
     networks:
       - internal
     restart: unless-stopped
-    depends_on:
-      - db
-  db:
-    image: "mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04"
-    environment:
-        SA_PASSWORD: "Your_password123"
-        ACCEPT_EULA: "Y"
-        MSSQL_PID: "Express"
-    ports:
-      - "1433:1433"
-    networks:
-      - internal
+#    depends_on:
+#      - db
+#  db:
+#    image: "mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04"
+#    environment:
+#        SA_PASSWORD: "Your_password123"
+#        ACCEPT_EULA: "Y"
+#        MSSQL_PID: "Express"
+#    ports:
+#      - "1433:1433"
+#    networks:
+#      - internal
 #    volumes:
 #      - C:\Users\User\Documents\GitHub\Data\data:/var/opt/mssql/data
 #      - ./.db:/var/opt/mssql/
