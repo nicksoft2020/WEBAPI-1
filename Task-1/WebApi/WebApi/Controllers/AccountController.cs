@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.JWT;
@@ -23,16 +25,26 @@ namespace WebApi.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
-        private IUnitOfWork repository;
+        private readonly IUnitOfWork _repository;
         private readonly ApplicationSettings options;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IUnitOfWork _repository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
-            IOptions<ApplicationSettings> appSettings)
+        /// <summary>
+        /// Account controller constructor.
+        /// </summary>
+        /// <param name="_repository">Injecting repository.</param>
+        /// <param name="userManager">Injecting user manager.</param>
+        /// <param name="signInManager">Injecting sing in manager.</param>
+        /// <param name="appSettings">Injecting application settings class</param>
+        /// <param name="logger">Injecting logger.</param>
+        public AccountController(IUnitOfWork repository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+            IOptions<ApplicationSettings> appSettings, ILogger<AccountController> logger)
         {
-            repository = _repository;
+            _repository = repository;
             options = appSettings.Value;
             this.signInManager = signInManager;
             this.userManager = userManager;
+            _logger = logger;
         }
 
         /// <summary>
@@ -51,12 +63,14 @@ namespace WebApi.Controllers
                 IdentityResult result = await userManager.CreateAsync(user, model.Password);   // adding new user to database
                 if (result.Succeeded)
                 {
-                    await repository.Users.Create(userData);
+                    _logger.LogInformation("Register succeed!");
+                    await _repository.Users.Create(userData);
                     return Ok("SuccessFully Saved.");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
             }
             return BadRequest("Invalid Data.");
         }
@@ -70,14 +84,21 @@ namespace WebApi.Controllers
         [Route("LoginUser")]
         public async Task<Object> Login([FromBody]LoginModel model)
         {
-
-            var user = await userManager.FindByNameAsync(model.Email);
-            if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
+            try
             {
+                var user = await userManager.FindByNameAsync(model.Email);
+                if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
+                {
 
-                string token = GenerateToken.CreateToken(options, user);
-                return Ok(new { token });
+                    string token = GenerateToken.CreateToken(options, user);
+                    return Ok(new { token });
+                }
             }
+            catch(Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+            
             return BadRequest(new { message = "There is not valid email of password!" });
         }
 

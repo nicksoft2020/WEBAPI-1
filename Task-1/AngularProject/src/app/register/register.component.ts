@@ -31,9 +31,12 @@ export class RegisterComponent implements OnInit {
         this.Createemployee(user);
     }
     Createemployee(register: Register) {
+        debugger;
         this.loginService.CreateUser(register).subscribe(
             data => {
+                debugger;
                 this.router.navigateByUrl('/login');
             });
+        this.router.navigateByUrl('/login');
     }
 }

@@ -16,7 +16,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
-    { path: '', component: LoginComponent, data: { title: 'Login Page' }  },
+    { path: '', component: UserComponent, data: { title: 'Login Page' }  },
     { path: 'user', component: UserComponent },
     { path: 'login', component: LoginComponent, data: { title: 'Login Page' } },
     { path: 'Dashboard', component: DashboardComponent, data: { title: 'Dashboard Page' } },

@@ -13,7 +13,7 @@ export class AccountService {
     header: any;
     constructor(private http: HttpClient) {
         //this.Url = "https://localhost:44334/api/account";
-        this.Url = "http://192.168.99.100:8080/api/users";
+        this.Url = "http://192.168.99.100:8080/api/account";
         const headerSettings: { [name: string]: string | string[]; } = {};
         this.header = new HttpHeaders(headerSettings);
     }

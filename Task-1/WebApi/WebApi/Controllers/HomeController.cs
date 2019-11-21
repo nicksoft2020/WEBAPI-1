@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace WebApi.Controllers
 {
@@ -15,14 +16,16 @@ namespace WebApi.Controllers
     public class HomeController : Controller
     {
         private IUnitOfWork repository;    // Repository value.
+        private ILogger<HomeController> _logger;
 
         /// <summary>
         /// Constructor for HomeController.
         /// </summary>
         /// <param name="iunit">object of repository</param>
-        public HomeController(IUnitOfWork _repository)
+        public HomeController(IUnitOfWork _repository, ILogger<HomeController> logger)
         {
             repository = _repository;
+            _logger = logger;
         }
 
         /// <summary>
@@ -32,8 +35,17 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<User>> GetUsersList()
         {
-            IEnumerable<User> users = await repository.Users.GetAllAsync();
-            return users;
+            try
+            {
+                IEnumerable<User> users = await repository.Users.GetAllAsync();
+                _logger.LogInformation("GetUsersList action.", users);
+                return users;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -45,10 +57,18 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdatingUser([FromBody]User user)   
         {
-            if (ModelState.IsValid)
+            try
             {
-                await repository.Users.Update(user);
-                return Ok(user);
+                if (ModelState.IsValid)
+                {
+                    await repository.Users.Update(user);
+                    _logger.LogInformation("UpdatingUser action!");
+                    return Ok(user);
+                }
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e.Message);
             }
             return BadRequest(ModelState);
         }
